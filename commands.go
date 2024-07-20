@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-var Commands map[string]cliCommand
+var Commands = map[string]cliCommand{}
 
 func init() {
 	RegisterCommand("help", "Displays a help message", commandHelp)
