@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"internal/pokeapi"
 )
 
 var commands map[string]cliCommand
@@ -17,6 +18,11 @@ func init() {
 			name:        "exit",
 			description: "Exit the Pokedex",
 			callback:    commandExit,
+		},
+		"test": {
+			name:        "test",
+			description: "Test whatever I'm currently working on",
+			callback:    commandTest,
 		},
 	}
 }
@@ -52,5 +58,11 @@ func commandHelp() error {
 
 func commandExit() error {
 	fmt.Println("Exiting Pokedex...")
+	return nil
+}
+
+func commandTest() error {
+	fmt.Println("Calling test")
+	pokeapi.GetLocationAreas()
 	return nil
 }
