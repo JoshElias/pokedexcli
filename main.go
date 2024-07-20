@@ -9,7 +9,7 @@ func main() {
 	for {
 		fmt.Print("Pokedex > ")
 		fmt.Scanln(&input)
-		if command, ok := commands[input]; !ok {
+		if command, ok := Commands[input]; !ok {
 			continue
 		} else {
 			command.callback()
