@@ -30,7 +30,12 @@ func main() {
 			continue
 		} else {
 			command.callback()
+
+			if command.name == "exit" {
+				break
+			}
 		}
+
 	}
 }
 
