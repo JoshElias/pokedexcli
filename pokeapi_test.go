@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"testing"
 )
 
 func TestGetLocationAreas(t *testing.T) {
-	GetLocationAreas()
+	if err := GetLocationAreas(); err != nil {
+		fmt.Println("error getting location areas")
+	}
 }

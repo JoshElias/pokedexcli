@@ -1,10 +1,18 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 )
 
 const POKEAPI_URL = "https://pokeapi.co/api/v2/location"
+
+type PokeAPIResponse[T any] struct {
+	Count    int    `json:"count"`
+	Next     string `json:"next"`
+	Previous string `json:"previous"`
+	Results  []T    `json:"results"`
+}
 
 type LocationArea struct {
 	ID                   int                    `json:"id"`
@@ -80,11 +88,20 @@ type PokemonEncounters struct {
 	VersionDetails []EncounterVersionDetails `json:"version_details"`
 }
 
-func GetLocationAreas() {
+func GetLocationAreas() error {
 	fmt.Println("Pokeapi URL: ", POKEAPI_URL)
 
-	// fmt.Println("Getting Location Areas")
-	// a, b := pokeapi.Resource("location-area")
-	// fmt.Println(a)
-	// fmt.Println(b)
+	data, err := GetRequest(POKEAPI_URL)
+	if err != nil {
+		return err
+	}
+
+	locationAreas := PokeAPIResponse[LocationArea]{}
+	err = json.Unmarshal(data, &locationAreas)
+	if err != nil {
+		return err
+	}
+	fmt.Println("successfully fetched location areas")
+	fmt.Println(locationAreas)
+	return nil
 }
