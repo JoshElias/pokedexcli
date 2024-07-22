@@ -9,6 +9,8 @@ var Commands = map[string]cliCommand{}
 func init() {
 	RegisterCommand("help", "Displays a help message", commandHelp)
 	RegisterCommand("exit", "Exit the Pokedex", commandExit)
+	RegisterCommand("map", "List the next 20 locations", commandMap)
+	RegisterCommand("mapb", "List the previous 20 locations", commandMapB)
 }
 
 func RegisterCommand(name string, description string, commandFunc func() error) {
@@ -36,4 +38,14 @@ func commandHelp() error {
 func commandExit() error {
 	fmt.Println("Exiting Pokedex...")
 	return nil
+}
+
+func commandMap() error {
+	fmt.Println("Printing the next 20 locations")
+	return Map()
+}
+
+func commandMapB() error {
+	fmt.Println("Printing the previous 20 locations")
+	return Map()
 }

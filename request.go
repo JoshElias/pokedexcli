@@ -24,6 +24,5 @@ func GetRequest(url string) ([]byte, error) {
 		log.Fatal(err)
 		return nil, err
 	}
-	fmt.Println("Received body: ", body)
 	return body, nil
 }

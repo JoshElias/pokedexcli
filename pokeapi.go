@@ -3,15 +3,21 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 )
 
-const POKEAPI_URL = "https://pokeapi.co/api/v2/location"
+const POKEAPI_URL = "https://pokeapi.co/api/v2/location-area"
 
-type PokeAPIResponse[T any] struct {
-	Count    int    `json:"count"`
-	Next     string `json:"next"`
-	Previous string `json:"previous"`
-	Results  []T    `json:"results"`
+type PokeAPIList struct {
+	Count    int               `json:"count"`
+	Next     string            `json:"next"`
+	Previous string            `json:"previous"`
+	Results  []PokeAPIListItem `json:"results"`
+}
+
+type PokeAPIListItem struct {
+	Name string `json:"name"`
+	URL  string `json:"url"`
 }
 
 type LocationArea struct {
@@ -88,20 +94,48 @@ type PokemonEncounters struct {
 	VersionDetails []EncounterVersionDetails `json:"version_details"`
 }
 
-func GetLocationAreas() error {
-	fmt.Println("Pokeapi URL: ", POKEAPI_URL)
+const firstMapUrl = POKEAPI_URL + "?offset=0&limit=20"
 
-	data, err := GetRequest(POKEAPI_URL)
+var nextMapUrl = strings.Clone(firstMapUrl)
+var prevMapUrl string
+
+func MapRequest(url string) (PokeAPIList, error) {
+	data, err := GetRequest(url)
+	if err != nil {
+		return PokeAPIList{}, err
+	}
+
+	res := PokeAPIList{}
+	err = json.Unmarshal(data, &res)
+	if err != nil {
+		return PokeAPIList{}, err
+	}
+	return res, nil
+}
+
+func HandleMap(url string) error {
+	list, err := MapRequest(url)
 	if err != nil {
 		return err
 	}
-
-	locationAreas := PokeAPIResponse[LocationArea]{}
-	err = json.Unmarshal(data, &locationAreas)
-	if err != nil {
-		return err
+	nextMapUrl = list.Next
+	prevMapUrl = list.Previous
+	for _, location := range list.Results {
+		fmt.Println(location.Name)
 	}
-	fmt.Println("successfully fetched location areas")
-	fmt.Println(locationAreas)
 	return nil
+}
+
+func Map() error {
+	if nextMapUrl == "" {
+		return fmt.Errorf("you've reached the end of the location area list")
+	}
+	return HandleMap(nextMapUrl)
+}
+
+func MapB() error {
+	if prevMapUrl == "" {
+		return fmt.Errorf("you're at the beginning of the location area list")
+	}
+	return HandleMap(prevMapUrl)
 }

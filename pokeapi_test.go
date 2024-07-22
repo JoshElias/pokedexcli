@@ -5,8 +5,8 @@ import (
 	"testing"
 )
 
-func TestGetLocationAreas(t *testing.T) {
-	if err := GetLocationAreas(); err != nil {
-		fmt.Println("error getting location areas")
+func TestMap(t *testing.T) {
+	if err := Map(); err != nil {
+		fmt.Println("error printing next maps")
 	}
 }
