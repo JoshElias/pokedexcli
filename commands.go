@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"internal/pokeapi"
 )
 
 var Commands = map[string]cliCommand{}
@@ -41,11 +42,9 @@ func commandExit() error {
 }
 
 func commandMap() error {
-	fmt.Println("Printing the next 20 locations")
-	return Map()
+	return pokeapi.Map()
 }
 
 func commandMapB() error {
-	fmt.Println("Printing the previous 20 locations")
-	return Map()
+	return pokeapi.MapB()
 }
