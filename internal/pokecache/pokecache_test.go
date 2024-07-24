@@ -7,6 +7,7 @@ import (
 
 func TestAdd(t *testing.T) {
 	cache := NewCache(10 * time.Second)
+	defer cache.Destroy()
 	testVal := "example"
 	cache.Add("test", []byte(testVal))
 	if len(cache.data) < 1 {
@@ -16,6 +17,7 @@ func TestAdd(t *testing.T) {
 
 func TestDelete(t *testing.T) {
 	cache := NewCache(10 * time.Second)
+	defer cache.Destroy()
 	testVal := "example"
 	cache.Add("test", []byte(testVal))
 	cache.Delete("test")
@@ -25,11 +27,12 @@ func TestDelete(t *testing.T) {
 }
 
 func TestReap(t *testing.T) {
-	cache := NewCache(10 * time.Second)
+	cache := NewCache(5 * time.Second)
+	defer cache.Destroy()
 	testVal := "example"
 	cache.Add("test", []byte(testVal))
-	time.Sleep(10 * time.Second)
-	if len(cache.data) > 0 {
+	time.Sleep(12 * time.Second)
+	if _, exists := cache.Get("test"); exists {
 		t.Fatal("failed to reap old key/value pair")
 	}
 }
