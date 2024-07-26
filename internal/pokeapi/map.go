@@ -3,11 +3,14 @@ package pokeapi
 import (
 	"encoding/json"
 	"fmt"
+	"internal/pokecache"
+	"time"
 )
 
 const mapLimit = 20
 
 var mapState = MapState{20, 0, 0, true}
+var cache = pokecache.NewCache(1 * time.Hour)
 
 type MapState struct {
 	pageLength uint
@@ -23,9 +26,14 @@ func MapRequest() (PokeResponseList, error) {
 		mapState.pageLength,
 		mapState.index*mapState.pageLength,
 	)
-	data, err := GetRequest(url)
-	if err != nil {
-		return PokeResponseList{}, err
+	data, exists := cache.Get(url)
+	var err error
+	if !exists {
+		data, err = GetRequest(url)
+		if err != nil {
+			return PokeResponseList{}, err
+		}
+		cache.Add(url, data)
 	}
 
 	res := PokeResponseList{}
