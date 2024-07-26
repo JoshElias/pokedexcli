@@ -3,15 +3,26 @@ package pokeapi
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
 )
 
-const firstMapUrl = POKEAPI_URL + "?offset=0&limit=20"
+const mapLimit = 20
 
-var nextMapUrl = strings.Clone(firstMapUrl)
-var prevMapUrl string
+var mapState = MapState{20, 0, 0, true}
 
-func MapRequest(url string) (PokeResponseList, error) {
+type MapState struct {
+	pageLength uint
+	count      uint
+	index      uint
+	increasing bool
+}
+
+func MapRequest() (PokeResponseList, error) {
+	url := fmt.Sprintf(
+		"%s?limit=%d&offset=%d",
+		POKEAPI_URL,
+		mapState.pageLength,
+		mapState.index*mapState.pageLength,
+	)
 	data, err := GetRequest(url)
 	if err != nil {
 		return PokeResponseList{}, err
@@ -25,29 +36,44 @@ func MapRequest(url string) (PokeResponseList, error) {
 	return res, nil
 }
 
-func HandleMap(url string) error {
-	list, err := MapRequest(url)
+func HandleMap() error {
+	list, err := MapRequest()
 	if err != nil {
 		return err
 	}
-	nextMapUrl = list.Next
-	prevMapUrl = list.Previous
 	for _, location := range list.Results {
 		fmt.Println(location.Name)
 	}
+	mapState.count = uint(list.Count)
 	return nil
 }
 
 func Map() error {
-	if nextMapUrl == "" {
+	if mapState.count == 0 && mapState.index > 0 {
+		return fmt.Errorf("count should never be 0 when the index is not 0")
+	} else if mapState.index*mapState.pageLength > mapState.count {
 		return fmt.Errorf("you've reached the end of the location area list")
 	}
-	return HandleMap(nextMapUrl)
+	HandleMap()
+	if mapState.increasing {
+		mapState.index++
+	} else {
+		mapState.index += 2
+	}
+	mapState.increasing = true
+	return nil
 }
 
 func MapB() error {
-	if prevMapUrl == "" {
+	if mapState.index == 0 || mapState.count < 1 {
 		return fmt.Errorf("you're at the beginning of the location area list")
 	}
-	return HandleMap(prevMapUrl)
+	if !mapState.increasing || mapState.index == 0 {
+		mapState.index--
+	} else {
+		mapState.index -= 2
+	}
+	mapState.increasing = false
+	HandleMap()
+	return nil
 }
