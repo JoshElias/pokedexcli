@@ -7,7 +7,6 @@ import (
 
 func TestAdd(t *testing.T) {
 	cache := NewCache(10 * time.Second)
-	defer cache.Destroy()
 	testVal := "example"
 	cache.Add("test", []byte(testVal))
 	if len(cache.data) < 1 {
@@ -17,7 +16,6 @@ func TestAdd(t *testing.T) {
 
 func TestDelete(t *testing.T) {
 	cache := NewCache(10 * time.Second)
-	defer cache.Destroy()
 	testVal := "example"
 	cache.Add("test", []byte(testVal))
 	cache.Delete("test")
@@ -28,7 +26,6 @@ func TestDelete(t *testing.T) {
 
 func TestReap(t *testing.T) {
 	cache := NewCache(5 * time.Second)
-	defer cache.Destroy()
 	testVal := "example"
 	cache.Add("test", []byte(testVal))
 	time.Sleep(12 * time.Second)
