@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
 func main() {
@@ -9,15 +10,19 @@ func main() {
 	for {
 		fmt.Print("Pokedex > ")
 		fmt.Scanln(&input)
-		if command, ok := Commands[input]; !ok {
+		words := strings.Fields(input)
+		command, ok := Commands[words[0]]
+		if !ok {
 			continue
-		} else {
-			command.callback()
-
-			if command.name == "exit" {
-				break
-			}
+		}
+		if command.name == "exit" {
+			break
 		}
 
+		if len(words) > 1 {
+			command.callback(words[1:]...)
+		} else {
+			command.callback()
+		}
 	}
 }
