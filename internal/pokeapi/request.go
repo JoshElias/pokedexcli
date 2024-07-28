@@ -8,6 +8,7 @@ import (
 )
 
 func GetRequest(url string) ([]byte, error) {
+	fmt.Println(url)
 	res, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)

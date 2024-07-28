@@ -29,12 +29,18 @@ func GetPokemon(name string) (PokemonDetails, error) {
 		cache.Add(url, data)
 	}
 
-	res := PokemonSummary{}
-	err = json.Unmarshal(data, &res)
+	details := PokemonDetails{}
 	if err != nil {
 		return PokemonDetails{}, err
 	}
-	return res, nil
+	cache.Add(url, data)
+
+	err = json.Unmarshal(data, &details)
+	if err != nil {
+		return PokemonDetails{}, err
+	}
+	PokemonBox[details.Name] = details
+	return details, nil
 }
 
 type PokemonSummary struct {
