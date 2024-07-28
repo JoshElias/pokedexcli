@@ -14,6 +14,7 @@ func init() {
 	RegisterCommand("map", "List the next 20 locations", commandMap)
 	RegisterCommand("mapb", "List the previous 20 locations", commandMapB)
 	RegisterCommand("explore", "List Pokemon encounters for a location", commandExplore)
+	RegisterCommand("catch", "Attempt to catch a Pokemon", commandCatch)
 }
 
 func RegisterCommand(name string, description string, commandFunc func(...string) error) {
@@ -56,4 +57,12 @@ func commandExplore(args ...string) error {
 		return errors.New("explore command needs a location area name or id")
 	}
 	return pokeapi.Explore(args[0])
+}
+
+func commandCatch(args ...string) error {
+	if len(args) == 0 {
+		return errors.New("catch command needs a pokemon name")
+	}
+	_, err := pokeapi.Catch(args[0])
+	return err
 }

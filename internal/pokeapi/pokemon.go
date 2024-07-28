@@ -9,10 +9,6 @@ const POKEAPI_POKEMON_URL = POKEAPI_URL + "/pokemon"
 
 var PokemonBox = make(map[string]PokemonDetails)
 
-func Catch(name string) error {
-	return nil
-}
-
 func GetPokemon(name string) (PokemonDetails, error) {
 	url := fmt.Sprintf(
 		"%s/%s",
