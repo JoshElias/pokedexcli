@@ -16,6 +16,7 @@ func init() {
 	RegisterCommand("explore", "List Pokemon encounters for a location", commandExplore)
 	RegisterCommand("catch", "Attempt to catch a Pokemon", commandCatch)
 	RegisterCommand("inspect", "Inspect a Pokemon you've caught", commandInspect)
+	RegisterCommand("pokedex", "List all the Pokemon you've caught", commandPokedex)
 
 }
 
@@ -74,4 +75,9 @@ func commandInspect(args ...string) error {
 		return errors.New("inspect command needs a pokemon name")
 	}
 	return pokeapi.Inspect(args[0])
+}
+
+func commandPokedex(args ...string) error {
+	pokeapi.Pokedex()
+	return nil
 }
