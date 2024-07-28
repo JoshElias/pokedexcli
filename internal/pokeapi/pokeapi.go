@@ -18,11 +18,6 @@ type Names struct {
 	Language Language `json:"language"`
 }
 
-type Pokemon struct {
-	Name string `json:"name"`
-	URL  string `json:"url"`
-}
-
 type Method struct {
 	Name string `json:"name"`
 	URL  string `json:"url"`
