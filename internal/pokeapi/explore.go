@@ -30,6 +30,7 @@ func ExploreRequest(id string) ([]PokemonEncounters, error) {
 }
 
 func Explore(id string) error {
+	fmt.Println("calling Explore with id: ", id)
 	encounters, err := ExploreRequest(id)
 	if err != nil {
 		return err

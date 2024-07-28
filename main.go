@@ -1,15 +1,20 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"strings"
 )
 
 func main() {
-	var input string
+	reader := bufio.NewReader(os.Stdin)
 	for {
-		fmt.Print("Pokedex > ")
-		fmt.Scanln(&input)
+		input, err := reader.ReadString('\n')
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 		words := strings.Fields(input)
 		command, ok := Commands[words[0]]
 		if !ok {
