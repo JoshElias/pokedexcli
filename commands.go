@@ -73,6 +73,5 @@ func commandInspect(args ...string) error {
 	if len(args) == 0 {
 		return errors.New("inspect command needs a pokemon name")
 	}
-	_, err := pokeapi.Catch(args[0])
-	return err
+	return pokeapi.Inspect(args[0])
 }
