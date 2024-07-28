@@ -1,12 +1,18 @@
 package pokeapi
 
 import (
-	"fmt"
 	"testing"
 )
 
 func TestMap(t *testing.T) {
 	if err := Map(); err != nil {
-		fmt.Println("error printing next maps")
+		t.Fatal("error printing next maps")
+	}
+}
+
+func TestExplore(t *testing.T) {
+	const location = "canalave-city-area"
+	if err := Explore(location); err != nil {
+		t.Fatal("error exploring location")
 	}
 }
