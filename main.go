@@ -10,6 +10,7 @@ import (
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 	for {
+		fmt.Print("Pokedex > ")
 		input, err := reader.ReadString('\n')
 		if err != nil {
 			fmt.Println(err)

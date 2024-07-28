@@ -1,6 +1,7 @@
 package pokeapi
 
-const POKEAPI_URL = "https://pokeapi.co/api/v2/location-area"
+const POKEAPI_URL = "https://pokeapi.co/api/v2"
+const POKEAPI_LOCATION_URL = POKEAPI_URL + "/location-area"
 
 type Version struct {
 	Name string `json:"name"`

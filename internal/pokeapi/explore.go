@@ -8,7 +8,7 @@ import (
 func ExploreRequest(id string) ([]PokemonEncounters, error) {
 	url := fmt.Sprintf(
 		"%s/%s",
-		POKEAPI_URL,
+		POKEAPI_LOCATION_URL,
 		id,
 	)
 	data, exists := cache.Get(url)

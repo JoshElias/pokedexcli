@@ -22,7 +22,7 @@ type MapState struct {
 func MapRequest() (PokeResponseList, error) {
 	url := fmt.Sprintf(
 		"%s?limit=%d&offset=%d",
-		POKEAPI_URL,
+		POKEAPI_LOCATION_URL,
 		mapState.pageLength,
 		mapState.index*mapState.pageLength,
 	)
